@@ -3,7 +3,7 @@
 ### Features
 mdmc has the following features:
 
-- **USA/JAP/EUR mode switching, including a clock generator**: makes the console region free, and allows it to use all video modes (RF/Composite/sVideo/RGBs)
+- **USA/JAP/EUR mode switching, including a clock generator**: makes the console region free, and allows it to use all video outputs (RF/Composite/sVideo/RGBs)
 - The mod is **switchless** and completely internal, regions can be changed:
     - through the <kbd>Reset</kbd> button: **Keep pushed** to cycle through modes.
     - from the Player 1 controller pad: Press <kbd>Start</kbd> + <kbd>B</kbd> + <kbd>Down</kbd>/<kbd>Left</kbd>/<kbd>Right</kbd> to set your desired mode.
