@@ -5,7 +5,7 @@ mdmc has the following features:
 - **USA/JAP/EUR mode switching, including a clock generator**: makes the console region free, and allows it to use all video outputs (RF/Composite/sVideo/RGBs)
 - The mod is **switchless** and completely internal, regions can be changed:
     - through the <kbd>Reset</kbd> button: **Keep pushed** to cycle through modes.
-    - from the Player 1 controller pad: Press <kbd>Start</kbd> + <kbd>B</kbd> + <kbd>Down</kbd>/<kbd>Left</kbd>/<kbd>Right</kbd> to set your desired mode.
+    - from the Player 1 controller pad: Press <kbd>Start</kbd> + <kbd>B</kbd> + <kbd>Left</kbd>/<kbd>Up</kbd>/<kbd>Right</kbd> to set your desired mode, NTSC-U/PAL-E/NTSC-J respectively (geographical position mnemonic).
 - The last used mode is saved automatically after 5 seconds and reused at power up.
 - Supports a single, dual or RGB LED to indicate the current mode.
 - **Reset-From-Pad**: Press <kbd>Start</kbd> + <kbd>A</kbd> + <kbd>B</kbd> + <kbd>C</kbd>.
