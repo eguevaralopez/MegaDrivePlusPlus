@@ -1,6 +1,5 @@
 ## mdmc - Mega Drive Mod Chip (based on MegaDrive++)
 
-### Features
 mdmc has the following features:
 
 - **USA/JAP/EUR mode switching, including a clock generator**: makes the console region free, and allows it to use all video outputs (RF/Composite/sVideo/RGBs)
