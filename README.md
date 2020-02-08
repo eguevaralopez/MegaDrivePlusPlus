@@ -12,7 +12,7 @@ mdmc has the following features:
 - Supports consoles with both active-high and active-low reset signals by autosensing (i.e.: **all console revisions**!).
 
 ### Installation
-If you are interested in modding your console with MegaDrive++, please [head to the wiki](https://github.com/SukkoPera/MegaDrivePlusPlus/wiki). There you will find full instructions about what to buy, how to compile MegaDrive++ and how to wire it in a few different Mega Drive/Genesis models that were sold.
+Installation instructions for the Arduino are largely the same as MegaDrive++ [head to the wiki](https://github.com/SukkoPera/MegaDrivePlusPlus/wiki). There is an additional piece to install which requires 5 wires, complete installation instructions and pictures will be added soon.
 
 ### License
 MegaDrive++ is Copyright &copy; 2015-2019 by SukkoPera.
