@@ -70,14 +70,11 @@
  *   
  * ******************************************************************************  
  *   
- *   MDMC - Mega Drive Mod Chip v0.2
+ *   MDMC - Mega Drive Mod Chip v0.3
  *   
- *   -revisar codigo de LED RGB
- *   --rgB_led_off () y save_mode () compartian #ifdef ENABLE_MODE_LED_RGB / #endif
- *   -remover codigo de LCD
- *   -comentar codigo de debugging
- *   -reorganizar codigo
- *   
+ *   -mejor configuracion de si5351, especialmente para PAL
+ *   -se agrego checks antes de cambiar una region: si esta en USA, no va a cambiar a USA, solo a JAP o EUR, etc
+ *   -combinaciones de 6 botones no sirven con el everdrive, asi que se van a quedar las combinaciones de 3 botones
  */
 
 #include <Adafruit_SI5351.h>
@@ -160,7 +157,7 @@ enum __attribute__ ((__packed__)) PadButton {
 #define TRIGGER_COMBO (MD_BTN_START | MD_BTN_B)
 
 // Reset combo
-#define RESET_COMBO MD_BTN_DOWN
+#define RESET_COMBO (MD_BTN_A | MD_BTN_C)
 
 // Region/video mode combos
 #define USA_COMBO MD_BTN_LEFT
@@ -223,9 +220,7 @@ volatile byte g_buttons_3 = 0xFF;
 //  #define debugln(...)
 //#endif
 
-/*******************************************************************************
- *******************************************************************************
- *******************************************************************************/
+/*******************************************************************************/
 
 void rgb_led_off () {
   #ifdef ENABLE_MODE_LED_RGB //terminaba en funcion save_mode ()
@@ -335,22 +330,22 @@ void set_mode (VideoMode m, boolean save) {
       m = USA;
       break;
     case EUR:
-      clockgen.setupPLL(SI5351_PLL_A, 34, 3137, 62500);  //setup the clock for PAL
-      clockgen.setupMultisynth(2, SI5351_PLL_A, 16, 0, 1);
+      clockgen.setupPLL(SI5351_PLL_A, 25, 210017, 390625); // setup the PLL for PAL
+      clockgen.setupMultisynth(2, SI5351_PLL_A, 12, 0, 1); // setup the clock divider for PAL
       digitalWrite (VIDEOMODE_PIN, LOW);    // PAL 50Hz
       digitalWrite (LANGUAGE_PIN, HIGH);    // ENG
       clockgen.enableOutputs(true);
       break;
     case USA:
-      clockgen.setupPLL(SI5351_PLL_A, 25, 193181, 250000); // setup the clock for NTSC
-      clockgen.setupMultisynth(2, SI5351_PLL_A, 12, 0, 1);
+      clockgen.setupPLL(SI5351_PLL_A, 25, 193181, 250000); // setup the PLL for NTSC
+      clockgen.setupMultisynth(2, SI5351_PLL_A, 12, 0, 1); // setup the clock divider for NTSC
       digitalWrite (VIDEOMODE_PIN, HIGH);   // NTSC 60Hz
       digitalWrite (LANGUAGE_PIN, HIGH);    // ENG
       clockgen.enableOutputs(true);      
       break;
     case JAP:
-      clockgen.setupPLL(SI5351_PLL_A, 25, 193181, 250000); // setup the clock for NTSC
-      clockgen.setupMultisynth(2, SI5351_PLL_A, 12, 0, 1);
+      clockgen.setupPLL(SI5351_PLL_A, 25, 193181, 250000); // setup the PLL for NTSC
+      clockgen.setupMultisynth(2, SI5351_PLL_A, 12, 0, 1); // setup the clock divider for NTSC
       digitalWrite (VIDEOMODE_PIN, HIGH);   // NTSC 60Hz
       digitalWrite (LANGUAGE_PIN, LOW);     // JAP
       clockgen.enableOutputs(true);
@@ -422,15 +417,15 @@ void setup () {
 //  dstart (57600);
 //  debugln (F("Starting up..."));
   
-  /* Rant: As per D4s's installation schematics out there (which we use too), it
-   * seems that on consoles with an active low reset signal, the Reset In input
-   * is taken before the pull-up resistor, while on consoles with active-high
-   * reset it is taken AFTER the pull-down resistor. This means that detecting
-   * the reset level by sampling the same line on both consoles is tricky, as in
-   * both cases one of the Reset In/Out signals is left floating :(. The
-   * following should work reliably, but we allow for a way to force the reset
-   * line level.
-   */
+  // Rant: As per D4s's installation schematics out there (which we use too), it
+  // seems that on consoles with an active low reset signal, the Reset In input
+  // is taken before the pull-up resistor, while on consoles with active-high
+  // reset it is taken AFTER the pull-down resistor. This means that detecting
+  // the reset level by sampling the same line on both consoles is tricky, as in
+  // both cases one of the Reset In/Out signals is left floating :(. The
+  // following should work reliably, but we allow for a way to force the reset
+  // line level.
+
   #ifndef FORCE_RESET_ACTIVE_LEVEL
     // Let things settle down and then sample the reset line
     delay (100);
@@ -595,19 +590,19 @@ inline void handle_pad () {
       clear_pad ();     // Avoid continuous resets
       last_combo_time = millis ();
     #ifdef USA_COMBO
-    } else if ((pad_status & USA_COMBO) == USA_COMBO) {
+    } else if (((pad_status & USA_COMBO) == USA_COMBO) & current_mode != USA) {
 //      debugln (F("USA mode combo detected"));
       set_mode (USA, true);
       last_combo_time = millis ();
     #endif
     #ifdef JAP_COMBO
-    } else if ((pad_status & JAP_COMBO) == JAP_COMBO) {
+    } else if (((pad_status & JAP_COMBO) == JAP_COMBO) & current_mode != JAP) {
 //      debugln (F("JAP mode combo detected"));
       set_mode (JAP, true);
       last_combo_time = millis ();
     #endif
     #ifdef EUR_COMBO
-    } else if ((pad_status & EUR_COMBO) == EUR_COMBO) {
+    } else if (((pad_status & EUR_COMBO) == EUR_COMBO) & current_mode != EUR) {
 //      debugln (F("EUR mode combo detected"));
       set_mode (EUR, true);
       last_combo_time = millis ();

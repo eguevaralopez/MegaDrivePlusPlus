@@ -1,3 +1,9 @@
+v0.3
+----
+-mejora en la config del si5351 para el modo PAL
+-checks antes de cambiar de region: solo cambia de modo si el nuevo modo es distinto al actual
+-configs de 6 botones no sirven en el everdrive, se dejan configs de 3 botones
+
 V0.2
 ----
 -se reviso codigo de LED RGB
