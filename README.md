@@ -15,19 +15,16 @@ mdmc has the following features:
 Installation instructions for the Arduino are largely the same as MegaDrive++ [head to the wiki](https://github.com/SukkoPera/MegaDrivePlusPlus/wiki). There is an additional piece to install which requires 5 wires, complete installation instructions and pictures will be added soon.
 
 ### History
-v0.3
-----
+**v0.3**
 -adjustment to PLL config for PAL mode
 -checks before region chage: only change if new region is different than current one
 
-v0.2
-----
+**v0.2**
 -slight code cleanup and reorganizing
 -removed LCD code to free up SCL/SCA for si5351
 -debugging code commented out, otherwise intact
 
-v0.1
-----
+**v0.1**
 -First release, slightly modified MegaDrive++
 
 ### License
